@@ -21,8 +21,8 @@ def comment_create_question(request, question_id):
             comment.create_date = timezone.now()
             comment.question = question
             comment.save()
-            return redirect('{}#comment_{}'.
-                            format((resolve_url('pybo:detail', question_id=comment.question.id), comment.id)))
+            return redirect('{}#comment_{}'.format(
+                resolve_url('pybo:detail', question_id=comment.question.id), comment.id))
     else:
         form = CommentForm()
     context = {'form': form}
@@ -42,12 +42,14 @@ def comment_modify_question(request, comment_id):
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             comment = form.save(commit=False)
+            comment.author = request.user
             comment.modify_date = timezone.now()
             comment.save()
-            return redirect('{}#comment_{}'.format(resolve_url('pybo:detail',
-                                                           question_id=comment.question.id), comment.id))
+            return redirect('{}#comment_{}'.format(
+                resolve_url('pybo:detail', question_id=comment.question.id), comment.id))
+    else:
         form = CommentForm(instance=comment)
-    context = {'form' : form}
+    context = {'form': form}
     return render(request, 'pybo/comment_form.html', context)
 
 @login_required(login_url='common:login')
