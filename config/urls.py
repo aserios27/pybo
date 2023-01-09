@@ -25,4 +25,4 @@ urlpatterns = [
 ]
 
 
-handler404 = 'common.views/page_not_found'
+handler404 = 'common.views.page_not_found'
